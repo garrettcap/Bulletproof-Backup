@@ -1,12 +1,12 @@
 __author__ = "Garrett Capaccioli"
-import os, os.path, sys, shutil, hashlib, getopt, cPickle as pickle
+import os, os.path, sys, shutil, hashlib, getopt, cPickle as pickle, pprint
 
 #Define Archive Location
 #OR BETTER, a version that looks in a specific location for the current user.
 #The tilde ( ~ ) at the start of the following string is used to indicate
 #the user's home directory, so this line for /myArchive/ directory on the
 #user's Desktop:
-myArchive = os.path.expanduser("~/Desktop/myArchive")
+myArchive = os.path.expanduser("~/Desktop/myBackup")
 myObjects = myArchive + "/objects"
 myIndex = myArchive + "/index"
 
@@ -57,7 +57,7 @@ def store_backup(user_input_directory):
     for root, dirs, files in os.walk(user_input_directory):
         print "Yay2!"  # logger goes here
         for file_name in files:
-                print "yay3!"  # logger would go here
+                # logger would go here
                 original_path = os.path.join(user_input_directory, file_name)
                 hash_name = create_file_signature(original_path)  # creates a hash for the file
                 if hash_name in index_file.values():  # checks file against index
@@ -71,25 +71,26 @@ def store_backup(user_input_directory):
 
     pickle.dump(index_file, open(myIndex, "wb"))  # dumps info into index file
     print "Files not added: " + str(files_not_added_count)
-    print "New files added: " + str(new_files_added)
+    print "New files added:"
+    pprint.pprint(new_files_added)
 
 #store_backup("/home/gar/Desktop/moop") # use for testing purposes
 
 def main(argv):  # command line interpreter (dont touch this bitch)
     try:
-        opts, args = getopt.getopt(argv, "his:", ["init", "store="])
+        opts, args = getopt.getopt(argv, "his:", ["init=", "store="])
     except getopt.GetoptError:
         print 'Must be in the following format'
         print "Options are [-i or --init to initalize and create backup folder]"
         print "            [-s or --store <directory_path> to create a backup of directory in backup folder]"
         sys.exit()
-        sys.exit()
     for opt, arg in opts:
         if opt == '-h':
             print "Options are [-i or --init to initalize and create backup folder]"
-            print "            [-s or --store <directory_path> to create a backup of directory in backup folder"
+            print "            [-s or --store <directory_path> to create a backup in backup folder]"
             sys.exit()
         elif opt in ("-i", "--init"):
+            print "yay!"
             init()
         elif opt in ("-s", "--store"):
             storedirectory = arg
@@ -97,5 +98,4 @@ def main(argv):  # command line interpreter (dont touch this bitch)
         else:
             print 'ERROR'
 if __name__ == "__main__":
-    main(sys.argv[1:])
-
+   main(sys.argv[1:])

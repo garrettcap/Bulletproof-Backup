@@ -4,10 +4,11 @@ import sys
 import shutil
 import hashlib
 import getopt
-import time
+import pprint
+
 from cPickle import dump, load
 
-myArchive = os.path.expanduser("~/Desktop/myArchive")
+myArchive = os.path.expanduser("~/Desktop/myBackup")
 myObjects = myArchive + "/objects"
 myIndex = myArchive + "/index"
 
@@ -81,7 +82,8 @@ def store_backup(user_input_directory):
 
     dump(index_file, open(myIndex, "wb"))  # dumps info into index file
     print("Files not added: " + str(files_not_added_count))
-    print("New files added: " + str(new_files_added))
+    print("New files added: ")
+    pprint.pprint(new_files_added)
 
 #store_backup("/home/gar/Desktop/moop") # use for testing purposes
 

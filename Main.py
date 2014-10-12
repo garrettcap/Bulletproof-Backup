@@ -58,6 +58,15 @@ def create_file_signature(filename):
 def index_check_and_add(hash_name, file_name, index_file):
     index_file[file_name] = hash_name
 
+def index_rename_to_original(restore_fullpath, index_file, destination_directory, file1):
+    print index_file
+    print file1
+    index_file_name = index_file.get(file1)
+    print index_file_name
+    new_file_fullpath = os.path.join(index_file_name, destination_directory)
+    os.rename(restore_fullpath, new_file_fullpath)
+
+
 
 def store_backup(user_input_directory):
     index_file = load((open(myIndex, 'rb')))  # loads index file
@@ -66,9 +75,7 @@ def store_backup(user_input_directory):
     print("Yay!")  # logger
 
     for root, dirs, files in os.walk(user_input_directory):
-        print "Yay2!"  # logger goes here
         for file_name in files:
-                print "yay3!"  # logger would go here
                 original_path = path.join(user_input_directory, file_name)
                 hash_name = create_file_signature(original_path)  # creates a hash for the file
                 if hash_name in index_file.values():  # checks file against index
@@ -94,13 +101,23 @@ def get_file():
 
 
 #recovers all files from archive
-def restore_files():
-    return 0
+def restore_files(destination_directory):
+    index_file = load((open(myIndex, 'rb')))
+    for file1 in index_file.itervalues():
+        restore_fullpath = os.path.join(myObjects, file1)
+        shutil.copy2(restore_fullpath, destination_directory)
+        # index_rename_to_original(restore_fullpath, index_file, destination_directory, file1)
 
+
+def list_all_items():
+    index_file = load((open(myIndex, 'rb')))
+    for file1 in index_file:
+        path.join(file1)
+        pprint.pprint(file1)
 
 def main(argv):  # command line interpreter
     try:
-        opts, args = getopt.getopt(argv, "his:", ["init", "store="])
+        opts, args = getopt.getopt(argv, "his:lr:", ["init", "store=", "list"])
     except getopt.GetoptError:
         print("Must be in the following format")
         print("Options are [-i or --init to initialize and create backup folder]")
@@ -113,6 +130,10 @@ def main(argv):  # command line interpreter
             sys.exit()
         elif opt in ("-i", "--init"):
             init()
+        elif opt in ("-l", "--list"):
+            list_all_items()
+        elif opt in ("-r", "--restore"):
+            restore_files(arg)
         elif opt in ("-s", "--store"):
             print("Store")
             stored_directory = arg

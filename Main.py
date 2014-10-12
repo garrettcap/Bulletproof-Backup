@@ -56,16 +56,17 @@ def create_file_signature(filename):
 
 
 def index_check_and_add(hash_name, file_name, index_file):
-    index_file[file_name] = hash_name
+    index_file[hash_name] = file_name
 
 def index_rename_to_original(restore_fullpath, index_file, destination_directory, file1):
     print index_file
     print file1
+    print destination_directory + "123"
     index_file_name = index_file.get(file1)
     print index_file_name
-    new_file_fullpath = os.path.join(index_file_name, destination_directory)
+    new_file_fullpath = os.path.join(destination_directory, index_file_name)
+    print new_file_fullpath
     os.rename(restore_fullpath, new_file_fullpath)
-
 
 
 def store_backup(user_input_directory):
@@ -103,17 +104,18 @@ def get_file():
 #recovers all files from archive
 def restore_files(destination_directory):
     index_file = load((open(myIndex, 'rb')))
-    for file1 in index_file.itervalues():
-        restore_fullpath = os.path.join(myObjects, file1)
-        shutil.copy2(restore_fullpath, destination_directory)
-        # index_rename_to_original(restore_fullpath, index_file, destination_directory, file1)
+    for files in index_file.iterkeys():
+        original_fullpath = os.path.join(myObjects, files)
+        shutil.copy2(original_fullpath, destination_directory)
+        restore_fullpath = os.path.join(destination_directory, files)
+        index_rename_to_original(restore_fullpath, index_file, destination_directory, files)
 
 
 def list_all_items():
     index_file = load((open(myIndex, 'rb')))
-    for file1 in index_file:
-        path.join(file1)
-        pprint.pprint(file1)
+    for files in index_file.itervalues():
+        path.join(files)
+        pprint.pprint(files)
 
 def main(argv):  # command line interpreter
     try:

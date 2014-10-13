@@ -54,10 +54,14 @@ def create_file_signature(filename):
             temp_file.close()
             return signature
 
+def make_directories(paths):
+    if not os.path.exists(paths):
+        os.makedirs(paths)
+
 
 def index_check_and_add(hash_name, relative_path, file_name, index_file):
     file_path = os.path.join(relative_path, file_name)
-    index_file[file_path] = hash_name
+    index_file[hash_name] = file_path
     return file_path
 
 
@@ -81,7 +85,6 @@ def store_backup(user_input_directory):
     for root, dirs, files in os.walk(user_input_directory):
         for file_name in files:
                 original_path = os.path.join(root, file_name)
-
                 hash_name = create_file_signature(original_path)  # creates a hash for the file
                 if hash_name in index_file.values():  # checks file against index
                     files_not_added_count += 1
@@ -95,7 +98,7 @@ def store_backup(user_input_directory):
                     #  adds files to index and new files added list
                     new_file = index_check_and_add(hash_name, relative_path, file_name, index_file)
                     new_files_added.append(new_file)
-                    
+
     dump(index_file, open(myIndex, "wb"))  # dumps info into index file
     print("Files not added: " + str(files_not_added_count))
     print("New files added: ")
@@ -108,16 +111,36 @@ def store_backup(user_input_directory):
 #recovers a single file from archive
 def get_file(desired_file):
     index_file = load((open(myIndex, 'rb')))
-
+    for hash_file, file_names in index_file.iteritems():
+        top_files, short_value = os.path.split(file_names)
+        if short_value == desired_file:
+            if top_files == ".":
+                begin_fullpath = os.path.join(myObjects, hash_file)
+            else:
+                begin_fullpath = os.path.join(myObjects, (os.path.join(top_files, hash_file)))
+            print begin_fullpath
+            final_fullpath = os.path.join(os.getcwd(), short_value)
+            print final_fullpath
+            shutil.copy2(begin_fullpath, final_fullpath)
+            sys.exit()
+        else:
+            print "Didnt find file"
 
 
 #recovers all files from archive
 def restore_files(destination_directory):
     index_file = load((open(myIndex, 'rb')))  # loads index file
-    for files in index_file.iterkeys():
-            shutil.copytree(files, destination_directory) # copies files into restore directory
-            shutil.copy2(files, destination_directory)
+    make_directories(destination_directory)
+    os.chdir(destination_directory)
+    for root, dirs, files in os.walk(myObjects):
+        for file_name in files:
+            file_fullpath = os.path.join(root, file_name)  # creates the fullpath to backup folder files
+            new_filepath = index_file.get(file_name)  # retrives the file values from dict
+            head, tail = os.path.split(new_filepath)  # splits filename into top directories
+            make_directories(head)  # makes required directories if non-existent
+            shutil.copy2(file_fullpath, new_filepath)  # copies files to restore and renames
 
+       # backup_fullpath = os.join.path(myObjects, original_backup)
        # restore_fullpath = os.path.join(destination_directory, files)  # creates filepath for restore directory
        # index_rename_to_original(restore_fullpath, index_file, destination_directory, files)  # renames files to regular names
 
@@ -130,7 +153,7 @@ def list_all_items():
 
 def main(argv):  # command line interpreter
     try:
-        opts, args = getopt.getopt(argv, "his:lr:", ["init", "store=", "list"])
+        opts, args = getopt.getopt(argv, "his:lr:g:", ["init", "store=", "list"])
     except getopt.GetoptError:
         print("Must be in the following format")
         print("Options are [-i or --init to initialize and create backup folder]")
@@ -155,6 +178,8 @@ def main(argv):  # command line interpreter
             print("Store")
             stored_directory = arg
             store_backup(stored_directory)
+        elif opt in ("-g" or "--get"):
+            get_file(arg)
         else:
             print('ERROR')
 

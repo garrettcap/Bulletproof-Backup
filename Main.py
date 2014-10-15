@@ -109,6 +109,20 @@ def create_file_signature(filename):
 def make_directories(paths):
     if not os.path.exists(paths):
         os.makedirs(paths)
+        logger.info("Directory creation successful")
+
+
+def update_index():
+    index_file = load((open(myIndex, 'rb')))  # loads index file
+    modified_dict = index_file
+    files_list = []
+    for root, dirs, files in os.walk(myObjects):  # walks through backup directory
+        for item in files:
+            files_list.append(item)  # returns a list of files in directory, (calling files list breaks counter)
+    for keys in index_file.keys():
+        if keys not in files_list:
+            del modified_dict[keys]
+    dump(modified_dict, open(myIndex, "wb"))  # dumps info into index file
 
 
 def index_check_and_add(hash_name, relative_path, file_name, index_file):
@@ -129,6 +143,7 @@ def index_rename_to_original(restore_fullpath, index_file, destination_directory
 """
 
 def store_backup(user_input_directory):
+    update_index()  # updates index file
     index_file = load((open(myIndex, 'rb')))  # loads index file
     files_not_added_count = 0  # file not added counter duh!
     new_files_added = []  # really....
@@ -139,7 +154,7 @@ def store_backup(user_input_directory):
                 original_path = os.path.join(root, file_name)
                 hash_name = create_file_signature(original_path)  # creates a hash for the file
                 logger.info(hash_name)
-                if hash_name in index_file.values():  # checks file against index
+                if hash_name in index_file:  # checks file against index
                     files_not_added_count += 1
                 else:
                     relative_path = os.path.relpath(root, user_input_directory)
@@ -150,12 +165,13 @@ def store_backup(user_input_directory):
                     shutil.copy2(original_path, file_backup_path)  # copies files...
                     #  adds files to index and new files added list
                     new_file = index_check_and_add(hash_name, relative_path, file_name, index_file)
-                    new_files_added.append(new_file) # adds files to
+                    new_files_added.append(new_file)  # adds files to
 
     dump(index_file, open(myIndex, "wb"))  # dumps info into index file
     print("Files not added: " + str(files_not_added_count))
     print("New files added: ")
     pprint.pprint(new_files_added)
+    logger.info("Backup Successful")
 
 
 #store_backup("/home/gar/Desktop/moop") # use for testing purposes
@@ -163,6 +179,7 @@ def store_backup(user_input_directory):
 
 #recovers a single file from archive
 def get_file(desired_file):
+    update_index()  # updates index
     index_file = load((open(myIndex, 'rb')))
     for hash_file, file_names in index_file.iteritems():
         top_files, short_value = os.path.split(file_names)
@@ -177,11 +194,12 @@ def get_file(desired_file):
             shutil.copy2(begin_fullpath, final_fullpath)
             sys.exit()
         else:
-            print "Didnt find file"
+            logger.error("File not forund in backup")
 
 
 #recovers all files from archive
 def restore_files(destination_directory):
+    update_index()
     index_file = load((open(myIndex, 'rb')))  # loads index file
     make_directories(destination_directory)  # makes directories
     os.chdir(destination_directory)
@@ -192,6 +210,8 @@ def restore_files(destination_directory):
             head, tail = os.path.split(new_filepath)  # splits filename into top directories
             make_directories(head)  # makes required directories if non-existent
             shutil.copy2(file_fullpath, new_filepath)  # copies files to restore and renames
+    logger.info("Restore successful")
+    print "Restore successful"
 
 # backup_fullpath = os.join.path(myObjects, original_backup)
 # restore_fullpath = os.path.join(destination_directory, files)  # creates filepath for restore directory
@@ -199,15 +219,17 @@ def restore_files(destination_directory):
 
 
 def list_all_items():  # lists all files in backup folder
+    update_index()
     index_file = load((open(myIndex, 'rb')))
     for files in index_file.itervalues():
         path.join(files)
-        pprint.pprint(files) # prings filepath
+        pprint.pprint(files)  # prints filepath
 
 def main(argv):  # command line interpreter
     try:
         opts, args = getopt.getopt(argv, "his:lr:g:", ["init", "store=", "list"])
     except getopt.GetoptError:
+        logger.error(getopt.GetoptError)
         print("Must be in the following format")
         print("Options are [-i or --init to initialize and create backup folder]")
         print("            [-s or --store <directory_path> to create a backup of directory in backup folder]")
@@ -239,7 +261,7 @@ def main(argv):  # command line interpreter
                 sys.exit()
             get_file(arg)
         else:
-            print('ERROR')
+            logger.error("Command not found, type -h for help")
 
 if __name__ == "__main__":
     main(sys.argv[1:])

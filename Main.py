@@ -118,10 +118,10 @@ def update_index():
     files_list = []
     for root, dirs, files in os.walk(myObjects):  # walks through backup directory
         for item in files:
-            files_list.append(item)  # returns a list of files in directory, (calling files list breaks counter)
-    for keys in index_file.keys():
-        if keys not in files_list:
-            del modified_dict[keys]
+            files_list.append(item)  # returns a list of files in directory, (calling the "files" list breaks counter)
+    for keys in index_file.keys():  # iterates through list of filename in index
+        if keys not in files_list:  # checks to see if files arent in backup directory
+            del modified_dict[keys]  # deletes if not in backup directory
     dump(modified_dict, open(myIndex, "wb"))  # dumps info into index file
 
 
@@ -188,13 +188,12 @@ def get_file(desired_file):
                 begin_fullpath = os.path.join(myObjects, hash_file)
             else:
                 begin_fullpath = os.path.join(myObjects, (os.path.join(top_files, hash_file)))
-            print begin_fullpath
             final_fullpath = os.path.join(os.getcwd(), short_value)
-            print final_fullpath
             shutil.copy2(begin_fullpath, final_fullpath)
+            print "File successfully extracted to " + final_fullpath
             sys.exit()
-        else:
-            logger.error("File not forund in backup")
+    logger.error("File not found in backup")
+    print " Try putting filename in quotations and adding extension. Ex. 'My file.txt'"
 
 
 #recovers all files from archive

@@ -71,19 +71,20 @@ def test():
         if value in objects_list:
             correct_count += 1
         else:
-            print key, "not found in archive"
-            logger.info("File Not Found")
+            print key, "- not found in archive."
+            logger.info("File Not Found.")
 
     files = [path.join(myObjects, objects) for objects in objects_list]
     for objects in files:
         if store.create_file_signature(objects) == path.basename(objects):
             file_count += 1
         else:
-            print path.basename(objects), " - Inconsistent Hash Match"
-            logger.info(path.basename(objects) + " - Inconsistent Hash Match")
+            print path.basename(objects), " - Inconsistent Hash Match."
+            logger.info(path.basename(objects) + " - Inconsistent Hash Match.")
 
     print "Number Of Matching Index: ", correct_count
     print "Number Of Matching Hash: ", file_count
+
 
 #recovers all files from archive
 def restore_files(destination_directory):

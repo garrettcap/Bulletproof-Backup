@@ -58,6 +58,33 @@ def get_file(desired_file):
     print "Try putting filename in quotations and adding extension. Ex. 'My file.txt'"
 
 
+def test():
+    print "Testing Archive"
+    logger.info("Testing Archive")
+
+    correct_count = 0
+    file_count = 0
+    index_file = load((open(myIndex, 'rb')))
+    objects_list = os.listdir(myObjects)
+
+    for key, value in index_file.iteritems():
+        if value in objects_list:
+            correct_count += 1
+        else:
+            print key, "not found in archive"
+            logger.info("File Not Found")
+
+    files = [path.join(myObjects, objects) for objects in objects_list]
+    for objects in files:
+        if store.create_file_signature(objects) == path.basename(objects):
+            file_count += 1
+        else:
+            print path.basename(objects), " - Inconsistent Hash Match"
+            logger.info(path.basename(objects) + " - Inconsistent Hash Match")
+
+    print "Number Of Matching Index: ", correct_count
+    print "Number Of Matching Hash: ", file_count
+
 #recovers all files from archive
 def restore_files(destination_directory):
     update_index()
@@ -85,7 +112,7 @@ def list_all_items():  # lists all files in backup folder
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "his:lr:g:", ["init", "store=", "list"])
+        opts, args = getopt.getopt(argv, "his:lr:g:t", ["init", "store=", "list"])
     except getopt.GetoptError:
         logger.error(getopt.GetoptError)
         print("Must be in the following format")
@@ -93,7 +120,8 @@ def main(argv):
         print("            [-s or --store <directory_path> to create a backup of directory in backup folder]")
         print("            [-r or --restore <destination_directory> to restore entire backup into destination]")
         print("            [-l or --list to list all files currently in backup folder]")
-        print("            [-g or -get <'filename'> restores individual file to current directory]")
+        print("            [-g or --get <'filename'> restores individual file to current directory]")
+        print("            [-t      Tests for errors in the archive]")
         sys.exit()
     for opt, arg in opts:
         if opt == "-h":
@@ -102,6 +130,7 @@ def main(argv):
             print("            [-r or --restore <destination_directory> to restore entire backup into destination]")
             print("            [-l or --list to list all files currently in backup folder]")
             print("            [-g or -get <'filename'> restores individual file to current directory]")
+            print("            [-t or  Tests for errors in the archive]")
             sys.exit()
         elif opt in ("-i", "--init"):
             initialization.init(myArchive, logger)
@@ -114,6 +143,8 @@ def main(argv):
             stored_directory = arg
             update_index()
             store.store_backup(stored_directory)
+        elif opt in "-t":
+            test()
         elif opt in ("-g" or "--get"):
             if not type(arg) is str:
                 print("-g or --get <'filename'> (filename must be in quotes)")

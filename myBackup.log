@@ -1,0 +1,73 @@
+2014-10-19 23:48:34,688 - myBackup - ERROR - <class 'getopt.GetoptError'>
+2014-10-19 23:49:13,676 - myBackup - ERROR - <class 'getopt.GetoptError'>
+2014-10-19 23:49:34,054 - myBackup - INFO - Testing Archive
+2014-10-19 23:49:51,564 - myBackup - ERROR - <class 'getopt.GetoptError'>
+2014-10-19 23:50:14,387 - myBackup - ERROR - <class 'getopt.GetoptError'>
+2014-10-19 23:50:21,497 - myBackup - ERROR - File not found in backup
+2014-10-19 23:51:13,281 - myBackup - INFO - Directory creation successful
+2014-10-19 23:51:13,295 - myBackup - INFO - Directory creation successful
+2014-10-19 23:51:13,301 - myBackup - INFO - Directory creation successful
+2014-10-19 23:51:13,302 - myBackup - INFO - Directory creation successful
+2014-10-19 23:51:13,318 - myBackup - INFO - Restore successful
+2014-10-19 23:51:52,630 - myBackup - ERROR - <class 'getopt.GetoptError'>
+2014-10-19 23:51:57,239 - myBackup - ERROR - <class 'getopt.GetoptError'>
+2014-10-19 23:52:24,418 - myBackup - ERROR - <class 'getopt.GetoptError'>
+2014-10-19 23:52:29,633 - myBackup - ERROR - <class 'getopt.GetoptError'>
+2014-10-19 23:52:53,078 - myBackup - INFO - Testing Archive
+2014-10-20 00:03:20,363 - myBackup - INFO - Testing Archive
+2014-10-20 00:25:54,679 - myBackup - INFO - Testing Archive
+2014-10-20 00:25:54,701 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,701 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,701 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,701 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,701 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,702 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,702 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,702 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,702 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,702 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,702 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,703 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,703 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,703 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,703 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,703 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,703 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,703 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,703 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,704 - myBackup - INFO - File Not Found
+2014-10-20 00:25:54,736 - myBackup - INFO - Hashing successful /Users/Connor/Desktop/myBackup/objects/09bd348aba4baa1b0d4f010e21d571cb7beae529
+2014-10-20 00:25:54,737 - myBackup - ERROR - <type 'exceptions.IOError'>
+2014-10-20 00:25:54,737 - myBackup - INFO - game - Inconsistent Hash
+2014-10-20 00:25:54,737 - myBackup - ERROR - <type 'exceptions.IOError'>
+2014-10-20 00:25:54,738 - myBackup - INFO - networking - Inconsistent Hash
+2014-10-20 00:25:54,738 - myBackup - ERROR - <type 'exceptions.IOError'>
+2014-10-20 00:25:54,738 - myBackup - INFO - panels - Inconsistent Hash
+2014-10-20 00:34:55,383 - myBackup - INFO - Testing Archive
+2014-10-20 00:34:55,460 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,460 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,460 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,460 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,461 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,461 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,461 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,461 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,461 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,461 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,461 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,462 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,462 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,462 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,462 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,462 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,462 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,462 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,463 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,463 - myBackup - INFO - File Not Found
+2014-10-20 00:34:55,492 - myBackup - INFO - Hashing successful /Users/Connor/Desktop/myBackup/objects/09bd348aba4baa1b0d4f010e21d571cb7beae529
+2014-10-20 00:34:55,492 - myBackup - ERROR - <type 'exceptions.IOError'>
+2014-10-20 00:34:55,493 - myBackup - INFO - game - Inconsistent Hash Match
+2014-10-20 00:34:55,493 - myBackup - ERROR - <type 'exceptions.IOError'>
+2014-10-20 00:34:55,493 - myBackup - INFO - networking - Inconsistent Hash Match
+2014-10-20 00:34:55,493 - myBackup - ERROR - <type 'exceptions.IOError'>
+2014-10-20 00:34:55,493 - myBackup - INFO - panels - Inconsistent Hash Match
